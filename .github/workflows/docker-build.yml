@@ -29,7 +29,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ github.token }}
 
-      # 4. 自动生成镜像标签
+      # 4. 自动生成镜像标签（修复latest报错，使用官方flavor自动生成latest）
       - name: Generate Image Tags
         id: meta
         uses: docker/metadata-action@v5
@@ -38,7 +38,8 @@ jobs:
           tags: |
             type=ref,event=branch
             type=sha,format=short
-            type=latest,branch=main
+          flavor: |
+            latest=auto
 
       # 5. 构建并推送镜像到GHCR
       - name: Build & Push Docker Image
